@@ -29,7 +29,7 @@ class App:
     )
     DEFAULT_LLM_TYPE: ClassVar[LlmType] = LlmType.OPEN_AI_GPT_4_1
     DEFAULT_LOG_FILEPATH: ClassVar[Path] = Path("/dev/null")
-    DEFAULT_SECRET_FILEPATH: ClassVar[Path] = Path(".env")
+    DEFAULT_SECRET_FILEPATH: ClassVar[Path] = Path("~/.config/ai/secret.json").expanduser()
     LOG_FILEPATH_MODE: ClassVar[str] = "wt"
 
     @classmethod
