@@ -1,0 +1,61 @@
+[project]
+name = "ai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mkutils",
+    "openai>=1.99.9",
+]
+
+[project.scripts]
+ai = "ai.app:App.cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "notebook>=7.4.5",
+    "pylint>=3.3.8",
+    "ruff>=0.12.8",
+    "ty>=0.0.1a17",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+disable = [
+    "fixme",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "too-few-public-methods",
+]
+
+[tool.pylint.reports]
+output-format = "colorized"
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+ignore = [
+    "UP007",
+    "UP045",
+]
+select = [
+    "E",
+    "F",
+    "UP",
+    "B",
+    "SIM",
+    "I",
+]
+
+[tool.uv.sources]
+mkutils = { git = "https://github.com/mkxl/mkutils", rev = "23ee2e99c72fb0205dd875e620de21de2ecc32a7" }
