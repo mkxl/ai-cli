@@ -26,7 +26,7 @@ class LlmType(Enum):
     OPEN_AI_O4_MINI = LlmInfo(provider=LlmProvider.OPEN_AI, model="o4-mini")
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True, kw_only=True)
 class Response:
     context_id: str
     text_aiter: AsyncIterator[str]
