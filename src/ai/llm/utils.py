@@ -2,7 +2,7 @@ import dataclasses
 from collections.abc import AsyncIterator, Iterable
 from enum import StrEnum
 from pathlib import Path
-from typing import IO, Optional, Protocol
+from typing import Optional, Protocol
 
 from mkutils import Enum, Utils
 
@@ -34,14 +34,14 @@ class Response:
     def header(self) -> str:
         return f"context: {self.context_id!r}"
 
-    async def write(self, *, stream: IO) -> None:
-        stream.write(self.header())
-        stream.write("\n\n")
+    async def aiter_text(self) -> AsyncIterator[str]:
+        yield self.header()
+        yield "\n\n"
 
         async for text in self.text_aiter:
-            stream.write(text)
+            yield text
 
-        stream.write("\n")
+        yield "\n"
 
 
 class Llm(Protocol):

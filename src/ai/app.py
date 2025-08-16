@@ -1,5 +1,4 @@
 import contextlib
-import sys
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Annotated, ClassVar, Optional, Self
@@ -72,6 +71,7 @@ class App:
                 input_paths = []
 
             with cls._llm(secret=secret, llm_type=llm_type) as llm:
-                await llm.respond(
-                    context=context, instructions=instructions, input_paths=input_paths, query=query
-                ).write(stream=sys.stdout)
+                response = llm.respond(context=context, instructions=instructions, input_paths=input_paths, query=query)
+
+                async for text in response.aiter_text():
+                    print(text, end="", flush=True)
