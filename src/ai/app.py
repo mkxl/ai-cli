@@ -1,4 +1,6 @@
 import contextlib
+import os
+import sys
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Annotated, ClassVar, Optional, Self
@@ -30,6 +32,7 @@ class App:
     DEFAULT_LOG_FILEPATH: ClassVar[Path] = Path("/dev/null")
     DEFAULT_SECRET_FILEPATH: ClassVar[Path] = Path("~/.config/ai/secret.json").expanduser()
     LOG_FILEPATH_MODE: ClassVar[str] = "wt"
+    SYS_STDOUT_FILENO: ClassVar[int] = sys.stdout.fileno()
 
     @classmethod
     def cli(cls) -> None:
@@ -47,6 +50,14 @@ class App:
     @staticmethod
     def _query(*, query_list: Iterable[str]) -> str:
         return " ".join(query_list)
+
+    # NOTE: use [os.write()] over [print(..., end="", flush=True)] to get around the line buffering that is introduced
+    # when this program is installed as a uv tool [line-buffering-117a6a]
+    @classmethod
+    def _write(cls, *, text: str) -> None:
+        byte_str = Utils.byte_str(text=text)
+
+        os.write(cls.SYS_STDOUT_FILENO, byte_str)
 
     # pylint: disable=too-many-arguments
     @classmethod
@@ -74,4 +85,4 @@ class App:
                 response = llm.respond(context=context, instructions=instructions, input_paths=input_paths, query=query)
 
                 async for text in response.aiter_text():
-                    print(text, end="", flush=True)
+                    cls._write(text=text)

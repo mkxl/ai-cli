@@ -58,4 +58,4 @@ select = [
 ]
 
 [tool.uv.sources]
-mkutils = { git = "https://github.com/mkxl/mkutils", rev = "23ee2e99c72fb0205dd875e620de21de2ecc32a7" }
+mkutils = { git = "https://github.com/mkxl/mkutils", rev = "8552ad4b6a5c860f5aa38cd8a05a1d5e276864c8" }
